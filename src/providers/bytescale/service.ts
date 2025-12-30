@@ -87,10 +87,31 @@ export class BytescaleFileProviderService extends AbstractFileProviderService {
    */
   async upload(file: ProviderUploadFileDTO): Promise<ProviderFileResultDTO> {
     try {
+      // Medusa may send Base64-encoded content (e.g., from browser uploads).
+      // We need to detect and decode it to a Buffer before uploading.
+      let uploadData: string | Buffer = file.content
+      
+      // Check if content is a Base64 data URL (e.g., "data:image/png;base64,iVBORw0...")
+      if (typeof file.content === 'string' && file.content.startsWith('data:')) {
+        const base64Match = file.content.match(/^data:[^;]+;base64,(.+)$/)
+        if (base64Match) {
+          uploadData = Buffer.from(base64Match[1], 'base64')
+          this.logger_.debug(`Decoded Base64 data URL for ${file.filename}`)
+        }
+      }
+      // Check if content is a plain Base64 string (common image signatures)
+      else if (typeof file.content === 'string' && (
+        file.content.startsWith('/9j/') ||  // JPEG
+        file.content.startsWith('iVBOR') ||  // PNG  
+        file.content.startsWith('R0lGO') ||  // GIF
+        file.content.startsWith('UklGR')     // WebP
+      )) {
+        uploadData = Buffer.from(file.content, 'base64')
+        this.logger_.debug(`Decoded plain Base64 string for ${file.filename}`)
+      }
+
       const result = await this.uploadManager_.upload({
-        // Medusa types define content as string, but the SDK handles string, Buffer, or Stream.
-        // We pass it directly without normalization.
-        data: file.content,
+        data: uploadData,
         mime: file.mimeType,
         originalFileName: file.filename,
         path: {
@@ -107,6 +128,7 @@ export class BytescaleFileProviderService extends AbstractFileProviderService {
       throw error
     }
   }
+
 
   /**
    * Deletes one or multiple files.
