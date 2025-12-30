@@ -50,4 +50,3 @@ deletion.
 BYTESCALE_ACCOUNT_ID=your_account_id
 BYTESCALE_API_KEY=secret_xxxxxxxxx
 ```
-# medusa-plugin-bytescale
