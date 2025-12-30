@@ -1,0 +1,56 @@
+{
+  "name": "medusa-plugin-bytescale",
+  "version": "1.0.0",
+  "description": "Bytescale (formerly Upload.io) file storage provider for Medusa v2",
+  "author": "Etarley Taveras",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etarley/medusa-plugin-bytescale.git"
+  },
+  "keywords": [
+    "medusa",
+    "medusa-plugin",
+    "medusa-plugin-storage",
+    "medusa-v2",
+    "bytescale",
+    "upload.io",
+    "file-storage"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "main": ".medusa/server/src/providers/bytescale/index.js",
+  "files": [
+    ".medusa/server",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./providers/bytescale": "./.medusa/server/src/providers/bytescale/index.js"
+  },
+  "scripts": {
+    "build": "medusa plugin:build",
+    "dev": "medusa plugin:develop",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "@medusajs/framework": "^2.0.0",
+    "@medusajs/medusa": "^2.0.0"
+  },
+  "dependencies": {
+    "@bytescale/sdk": "^3.53.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@medusajs/cli": "2.12.3",
+    "@medusajs/framework": "2.12.3",
+    "@medusajs/medusa": "2.12.3",
+    "@types/node": "^25.0.3",
+    "@types/node-fetch": "^2.6.13",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,1184 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+src/
+  admin/
+    i18n/
+      index.ts
+      README.md
+    README.md
+    tsconfig.json
+    vite-env.d.ts
+  api/
+    admin/
+      plugin/
+        route.ts
+    store/
+      plugin/
+        route.ts
+    README.md
+  jobs/
+    README.md
+  links/
+    README.md
+  modules/
+    README.md
+  providers/
+    bytescale/
+      index.ts
+      service.ts
+    README.md
+  subscribers/
+    README.md
+  workflows/
+    README.md
+.gitignore
+package.json
+README.md
+tsconfig.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="src/admin/i18n/index.ts">
+export default {}
+</file>
+
+<file path="src/admin/i18n/README.md">
+# Admin Customizations Translations
+
+The Medusa Admin dashboard supports multiple languages for its interface. Medusa uses [react-i18next](https://react.i18next.com/) to manage translations in the admin dashboard.
+
+To add translations, create JSON translation files for each language under the `src/admin/i18n/json` directory. For example, create the `src/admin/i18n/json/en.json` file with the following content:
+
+```json
+{
+  "brands": {
+    "title": "Brands",
+    "description": "Manage your product brands"
+  },
+  "done": "Done"
+}
+```
+
+Then, export the translations in `src/admin/i18n/index.ts`:
+
+```ts
+import en from "./json/en.json" with { type: "json" }
+
+export default {
+  en: {
+    translation: en,
+  },
+}
+```
+
+Finally, use translations in your admin widgets and routes using the `useTranslation` hook:
+
+```tsx
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Button, Container, Heading } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
+
+const ProductWidget = () => {
+  const { t } = useTranslation()
+  return (
+    <Container className="p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">{t("brands.title")}</Heading>
+        <p>{t("brands.description")}</p>
+      </div>
+      <div className="flex justify-end px-6 py-4">
+        <Button variant="primary">{t("done")}</Button>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+Learn more about translating admin extensions in the [Translate Admin Customizations](https://docs.medusajs.com/learn/fundamentals/admin/translations) documentation.
+</file>
+
+<file path="src/admin/README.md">
+# Admin Customizations
+
+You can extend the Medusa Admin to add widgets and new pages. Your customizations interact with API routes to provide merchants with custom functionalities.
+
+## Example: Create a Widget
+
+A widget is a React component that can be injected into an existing page in the admin dashboard.
+
+For example, create the file `src/admin/widgets/product-widget.tsx` with the following content:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+// The widget
+const ProductWidget = () => {
+  return (
+    <div>
+      <h2>Product Widget</h2>
+    </div>
+  )
+}
+
+// The widget's configurations
+export const config = defineWidgetConfig({
+  zone: "product.details.after",
+})
+
+export default ProductWidget
+```
+
+This inserts a widget with the text “Product Widget” at the end of a product’s details page.
+</file>
+
+<file path="src/admin/tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["."]
+}
+</file>
+
+<file path="src/admin/vite-env.d.ts">
+/// <reference types="vite/client" />
+</file>
+
+<file path="src/api/admin/plugin/route.ts">
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  res.sendStatus(200);
+}
+</file>
+
+<file path="src/api/store/plugin/route.ts">
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  res.sendStatus(200);
+}
+</file>
+
+<file path="src/api/README.md">
+# Custom API Routes
+
+An API Route is a REST API endpoint.
+
+An API Route is created in a TypeScript or JavaScript file under the `/src/api` directory of your Medusa application. The file’s name must be `route.ts` or `route.js`.
+
+For example, to create a `GET` API Route at `/store/hello-world`, create the file `src/api/store/hello-world/route.ts` with the following content:
+
+```ts
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  res.json({
+    message: "Hello world!",
+  });
+}
+```
+
+## Supported HTTP methods
+
+The file based routing supports the following HTTP methods:
+
+- GET
+- POST
+- PUT
+- PATCH
+- DELETE
+- OPTIONS
+- HEAD
+
+You can define a handler for each of these methods by exporting a function with the name of the method in the paths `route.ts` file.
+
+For example:
+
+```ts
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  // Handle GET requests
+}
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  // Handle POST requests
+}
+
+export async function PUT(req: MedusaRequest, res: MedusaResponse) {
+  // Handle PUT requests
+}
+```
+
+## Parameters
+
+To create an API route that accepts a path parameter, create a directory within the route's path whose name is of the format `[param]`.
+
+For example, if you want to define a route that takes a `productId` parameter, you can do so by creating a file called `/api/products/[productId]/route.ts`:
+
+```ts
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const { productId } = req.params;
+
+  res.json({
+    message: `You're looking for product ${productId}`
+  })
+}
+```
+
+To create an API route that accepts multiple path parameters, create within the file's path multiple directories whose names are of the format `[param]`.
+
+For example, if you want to define a route that takes both a `productId` and a `variantId` parameter, you can do so by creating a file called `/api/products/[productId]/variants/[variantId]/route.ts`.
+
+## Using the container
+
+The Medusa container is available on `req.scope`. Use it to access modules' main services and other registered resources:
+
+```ts
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const productModuleService = req.scope.resolve("product")
+
+  const [, count] = await productModuleService.listAndCount()
+
+  res.json({
+    count,
+  })
+}
+```
+
+## Middleware
+
+You can apply middleware to your routes by creating a file called `/api/middlewares.ts`. This file must export a configuration object with what middleware you want to apply to which routes.
+
+For example, if you want to apply a custom middleware function to the `/store/custom` route, you can do so by adding the following to your `/api/middlewares.ts` file:
+
+```ts
+import { defineMiddlewares } from "@medusajs/framework/http"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+  MedusaNextFunction,
+} from "@medusajs/framework/http";
+
+async function logger(
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  console.log("Request received");
+  next();
+}
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/custom",
+      middlewares: [logger],
+    },
+  ],
+})
+```
+
+The `matcher` property can be either a string or a regular expression. The `middlewares` property accepts an array of middleware functions.
+</file>
+
+<file path="src/jobs/README.md">
+# Custom scheduled jobs
+
+A scheduled job is a function executed at a specified interval of time in the background of your Medusa application.
+
+A scheduled job is created in a TypeScript or JavaScript file under the `src/jobs` directory.
+
+For example, create the file `src/jobs/hello-world.ts` with the following content:
+
+```ts
+import {
+  MedusaContainer
+} from "@medusajs/framework/types";
+
+export default async function myCustomJob(container: MedusaContainer) {
+  const productService = container.resolve("product")
+
+  const products = await productService.listAndCountProducts();
+
+  // Do something with the products
+}
+
+export const config = {
+  name: "daily-product-report",
+  schedule: "0 0 * * *", // Every day at midnight
+};
+```
+
+A scheduled job file must export:
+
+- The function to be executed whenever it’s time to run the scheduled job.
+- A configuration object defining the job. It has three properties:
+  - `name`: a unique name for the job.
+  - `schedule`: a [cron expression](https://crontab.guru/).
+  - `numberOfExecutions`: an optional integer, specifying how many times the job will execute before being removed
+
+The `handler` is a function that accepts one parameter, `container`, which is a `MedusaContainer` instance used to resolve services.
+</file>
+
+<file path="src/links/README.md">
+# Module Links
+
+A module link forms an association between two data models of different modules, while maintaining module isolation.
+
+Learn more about links in [this documentation](https://docs.medusajs.com/learn/fundamentals/module-links)
+
+For example:
+
+```ts
+import BlogModule from "../modules/blog"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
+
+export default defineLink(
+  ProductModule.linkable.product,
+  BlogModule.linkable.post
+)
+```
+
+This defines a link between the Product Module's `product` data model and the Blog Module (custom module)'s `post` data model.
+
+Then, in the Medusa application using this plugin, run the following command to sync the links to the database:
+
+```bash
+npx medusa db:migrate
+```
+</file>
+
+<file path="src/modules/README.md">
+# Custom Module
+
+A module is a package of reusable functionalities. It can be integrated into your Medusa application without affecting the overall system. You can create a module as part of a plugin.
+
+Learn more about modules in [this documentation](https://docs.medusajs.com/learn/fundamentals/modules).
+
+To create a module:
+
+## 1. Create a Data Model
+
+A data model represents a table in the database. You create a data model in a TypeScript or JavaScript file under the `models` directory of a module.
+
+For example, create the file `src/modules/blog/models/post.ts` with the following content:
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  title: model.text(),
+})
+
+export default Post
+```
+
+## 2. Create a Service
+
+A module must define a service. A service is a TypeScript or JavaScript class holding methods related to a business logic or commerce functionality.
+
+For example, create the file `src/modules/blog/service.ts` with the following content:
+
+```ts
+import { MedusaService } from "@medusajs/framework/utils"
+import Post from "./models/post"
+
+class BlogModuleService extends MedusaService({
+  Post,
+}){
+}
+
+export default BlogModuleService
+```
+
+## 3. Export Module Definition
+
+A module must have an `index.ts` file in its root directory that exports its definition. The definition specifies the main service of the module.
+
+For example, create the file `src/modules/blog/index.ts` with the following content:
+
+```ts
+import BlogModuleService from "./service"
+import { Module } from "@medusajs/framework/utils"
+
+export const BLOG_MODULE = "blog"
+
+export default Module(BLOG_MODULE, {
+  service: BlogModuleService,
+})
+```
+
+## 4. Generate Migrations
+
+To generate migrations for your module, run the following command in the plugin's directory:
+
+```bash
+npx medusa plugin:db:genreate
+```
+
+## Use Module
+
+You can use the module in customizations within the plugin or within the Medusa application using this plugin. When the plugin is added to a Medusa application, all its modules are registered as well.
+
+For example, to use the module in an API route:
+
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
+import BlogModuleService from "../../../modules/blog/service"
+import { BLOG_MODULE } from "../../../modules/blog"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const blogModuleService: BlogModuleService = req.scope.resolve(
+    BLOG_MODULE
+  )
+
+  const posts = await blogModuleService.listPosts()
+
+  res.json({
+    posts
+  })
+}
+```
+
+## Module Options
+
+When you register the plugin in the Medusa application, it can accept options. These options are passed to the modules within the plugin:
+
+```ts
+import { defineConfig } from "@medusajs/framework/utils"
+
+module.exports = defineConfig({
+  // ...
+  plugins: [
+    {
+      resolve: "@myorg/plugin-name",
+      options: {
+        apiKey: process.env.API_KEY,
+      },
+    },
+  ],
+})
+```
+
+Learn more about module options in [this documentation](https://docs.medusajs.com/learn/fundamentals/modules/options).
+</file>
+
+<file path="src/providers/bytescale/index.ts">
+import { BytescaleFileProviderService } from "./service"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
+
+export default ModuleProvider(Modules.FILE, {
+  services: [BytescaleFileProviderService],
+})
+</file>
+
+<file path="src/providers/bytescale/service.ts">
+import { AbstractFileProviderService, MedusaError } from "@medusajs/framework/utils"
+import {
+  ProviderUploadFileDTO,
+  ProviderDeleteFileDTO,
+  ProviderFileResultDTO,
+  ProviderGetFileDTO,
+  ProviderUploadStreamDTO,
+  Logger,
+} from "@medusajs/framework/types"
+import * as Bytescale from "@bytescale/sdk"
+// @ts-expect-error
+import nodeFetch from "node-fetch"
+import { PassThrough, Readable, Writable } from "stream"
+
+type BytescaleOptions = {
+  apiKey: string
+  accountId: string
+  prefix?: string
+}
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+export class BytescaleFileProviderService extends AbstractFileProviderService {
+  static identifier = "bytescale-file"
+  
+  protected options_: BytescaleOptions
+  protected uploadManager_: Bytescale.UploadManager
+  protected fileApi_: Bytescale.FileApi
+  protected logger_: Logger
+
+  constructor({ logger }: InjectedDependencies, options: BytescaleOptions) {
+    super()
+    this.options_ = options
+    this.logger_ = logger
+
+    BytescaleFileProviderService.validateOptions(options)
+
+    // Initialize Bytescale SDKs with node-fetch (v2) polyfill
+    this.uploadManager_ = new Bytescale.UploadManager({
+      // @ts-expect-error - node-fetch v3 types don't strictly match the SDK's expected Fetch API interface, but it works at runtime.
+      fetchApi: nodeFetch,
+      apiKey: options.apiKey,
+    })
+
+    this.fileApi_ = new Bytescale.FileApi({
+      // @ts-expect-error - node-fetch v3 types don't strictly match the SDK's expected Fetch API interface, but it works at runtime.
+      fetchApi: nodeFetch,
+      apiKey: options.apiKey,
+    })
+  }
+
+  static validateOptions(options: Record<any, any>) {
+    if (!options.apiKey) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Bytescale provider requires 'apiKey' option."
+      )
+    }
+    if (!options.accountId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Bytescale provider requires 'accountId' option."
+      )
+    }
+  }
+
+  /**
+   * Helper to normalize folder paths based on config.
+   * Ensures format: "/path/to/folder" (Leading slash, no trailing slash).
+   */
+  private getUploadPath(): string {
+    let folderPath = this.options_.prefix || "/uploads"
+    if (!folderPath.startsWith("/")) {
+      folderPath = `/${folderPath}`
+    }
+    if (folderPath.length > 1 && folderPath.endsWith("/")) {
+      folderPath = folderPath.slice(0, -1)
+    }
+    return folderPath
+  }
+
+  /**
+   * Uploads a file to Bytescale.
+   * The SDK's `data` property accepts `string | Buffer | Stream`.
+   */
+  async upload(file: ProviderUploadFileDTO): Promise<ProviderFileResultDTO> {
+    try {
+      const result = await this.uploadManager_.upload({
+        // Medusa types define content as string, but the SDK handles string, Buffer, or Stream.
+        // We pass it directly without normalization.
+        data: file.content,
+        mime: file.mimeType,
+        originalFileName: file.filename,
+        path: {
+          folderPath: this.getUploadPath(),
+        }
+      })
+
+      return {
+        url: result.fileUrl,
+        key: result.filePath,
+      }
+    } catch (error) {
+      this.logger_.error(`Bytescale upload failed for ${file.filename}: ${error.message}`)
+      throw error
+    }
+  }
+
+  /**
+   * Deletes one or multiple files.
+   */
+  async delete(files: ProviderDeleteFileDTO | ProviderDeleteFileDTO[]): Promise<void> {
+    const fileArray = Array.isArray(files) ? files : [files]
+    
+    // Execute deletes in parallel
+    await Promise.all(
+      fileArray.map(async (file) => {
+        try {
+          await this.fileApi_.deleteFile({
+            accountId: this.options_.accountId,
+            filePath: file.fileKey,
+          })
+        } catch (error) {
+          // Log but don't throw to allow other files in the batch to process
+          this.logger_.warn(`Bytescale delete failed for ${file.fileKey}: ${error.message}`)
+        }
+      })
+    )
+  }
+
+  /**
+   * Generates a public URL.
+   */
+  async getPresignedDownloadUrl(fileData: ProviderGetFileDTO): Promise<string> {
+    try {
+      return Bytescale.UrlBuilder.url({
+        accountId: this.options_.accountId,
+        filePath: fileData.fileKey,
+      })
+    } catch (error) {
+      this.logger_.error(`Bytescale URL gen failed: ${error.message}`)
+      throw error
+    }
+  }
+
+  /**
+   * Returns a Writable stream that Medusa can pipe data into.
+   */
+  async getUploadStream(fileData: ProviderUploadStreamDTO): Promise<{
+    writeStream: Writable
+    promise: Promise<ProviderFileResultDTO>
+    url: string
+    fileKey: string
+  }> {
+    try {
+      // Create a PassThrough stream. Medusa writes to this, Bytescale reads from this.
+      const pass = new PassThrough()
+      const folderPath = this.getUploadPath()
+      
+      const expectedKey = `${folderPath}/${fileData.filename}`
+      const expectedUrl = Bytescale.UrlBuilder.url({
+        accountId: this.options_.accountId,
+        filePath: expectedKey
+      })
+
+      // Start the upload process immediately using the stream
+      const uploadPromise = this.uploadManager_.upload({
+        data: pass,
+        mime: fileData.mimeType,
+        originalFileName: fileData.filename,
+        path: { folderPath }
+      }).then(result => ({
+        url: result.fileUrl,
+        key: result.filePath
+      }))
+
+      return {
+        writeStream: pass,
+        promise: uploadPromise,
+        url: expectedUrl,
+        fileKey: expectedKey
+      }
+    } catch (error) {
+      this.logger_.error(`Bytescale upload stream failed: ${error.message}`)
+      throw error
+    }
+  }
+
+  /**
+   * Gets the file as a Readable stream.
+   */
+  async getDownloadStream(fileData: ProviderGetFileDTO): Promise<Readable> {
+    try {
+      const response = await this.fileApi_.downloadFile({
+        accountId: this.options_.accountId,
+        filePath: fileData.fileKey,
+      })
+      
+      // node-fetch response.body is a readable stream
+      return response.raw.body as unknown as Readable
+    } catch (error) {
+      this.logger_.error(`Bytescale download stream failed: ${error.message}`)
+      throw error
+    }
+  }
+
+  /**
+   * Gets the file as a memory Buffer.
+   */
+  async getAsBuffer(fileData: ProviderGetFileDTO): Promise<Buffer> {
+    try {
+      const response = await this.fileApi_.downloadFile({
+        accountId: this.options_.accountId,
+        filePath: fileData.fileKey,
+      })
+      
+      // Access the raw node-fetch response to use .buffer()
+      // @ts-expect-error - node-fetch v2 response object has a buffer method
+      return await response.raw.buffer()
+    } catch (error) {
+      this.logger_.error(`Bytescale buffer download failed: ${error.message}`)
+      throw error
+    }
+  }
+}
+</file>
+
+<file path="src/providers/README.md">
+## Module Providers
+
+You can create module providers, such as Notification or File Module Providers under a sub-directory of this directory. For example, `src/providers/my-notification`.
+
+Then, you register them in the Medusa application as `plugin-name/providers/my-notification`:
+
+```ts
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          {
+            resolve: "@myorg/plugin-name/providers/my-notification",
+            id: "my-notification",
+            options: {
+              channels: ["email"],
+              // provider options...
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Learn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/plugins/create).
+</file>
+
+<file path="src/subscribers/README.md">
+# Custom subscribers
+
+Subscribers handle events emitted in the Medusa application.
+
+The subscriber is created in a TypeScript or JavaScript file under the `src/subscribers` directory.
+
+For example, create the file `src/subscribers/product-created.ts` with the following content:
+
+```ts
+import {
+  type SubscriberConfig,
+} from "@medusajs/framework"
+
+// subscriber function
+export default async function productCreateHandler() {
+  console.log("A product was created")
+}
+
+// subscriber config
+export const config: SubscriberConfig = {
+  event: "product.created",
+}
+```
+
+A subscriber file must export:
+
+- The subscriber function that is an asynchronous function executed whenever the associated event is triggered.
+- A configuration object defining the event this subscriber is listening to.
+
+## Subscriber Parameters
+
+A subscriber receives an object having the following properties:
+
+- `event`: An object holding the event's details. It has a `data` property, which is the event's data payload.
+- `container`: The Medusa container. Use it to resolve modules' main services and other registered resources.
+
+```ts
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+
+export default async function productCreateHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const productId = data.id
+
+  const productModuleService = container.resolve("product")
+
+  const product = await productModuleService.retrieveProduct(productId)
+
+  console.log(`The product ${product.title} was created`)
+}
+
+export const config: SubscriberConfig = {
+  event: "product.created",
+}
+```
+</file>
+
+<file path="src/workflows/README.md">
+# Custom Workflows
+
+A workflow is a series of queries and actions that complete a task.
+
+The workflow is created in a TypeScript or JavaScript file under the `src/workflows` directory.
+
+For example:
+
+```ts
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const step1 = createStep("step-1", async () => {
+  return new StepResponse(`Hello from step one!`)
+})
+
+type WorkflowInput = {
+  name: string
+}
+
+const step2 = createStep(
+  "step-2",
+  async ({ name }: WorkflowInput) => {
+    return new StepResponse(`Hello ${name} from step two!`)
+  }
+)
+
+type WorkflowOutput = {
+  message1: string
+  message2: string
+}
+
+const helloWorldWorkflow = createWorkflow(
+  "hello-world",
+  (input: WorkflowInput) => {
+    const greeting1 = step1()
+    const greeting2 = step2(input)
+    
+    return new WorkflowResponse({
+      message1: greeting1,
+      message2: greeting2
+    })
+  }
+)
+
+export default helloWorldWorkflow
+```
+
+## Execute Workflow
+
+You can execute the workflow from other resources, such as API routes, scheduled jobs, or subscribers.
+
+For example, to execute the workflow in an API route:
+
+```ts
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework"
+import myWorkflow from "../../../workflows/hello-world"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await myWorkflow(req.scope)
+    .run({
+      input: {
+        name: req.query.name as string,
+      },
+    })
+
+  res.send(result)
+}
+```
+</file>
+
+<file path=".gitignore">
+/dist
+.env
+.DS_Store
+/uploads
+/node_modules
+yarn-error.log
+
+.idea
+
+coverage
+
+!src/**
+
+./tsconfig.tsbuildinfo
+medusa-db.sql
+build
+.cache
+
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.medusa
+</file>
+
+<file path="package.json">
+{
+  "name": "medusa-plugin-bytescale",
+  "version": "0.0.1",
+  "description": "A starter for Medusa plugins.",
+  "author": "Medusa (https://medusajs.com)",
+  "license": "MIT",
+  "files": [
+    ".medusa/server"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./workflows": "./.medusa/server/src/workflows/index.js",
+    "./.medusa/server/src/modules/*": "./.medusa/server/src/modules/*/index.js",
+    "./modules/*": "./.medusa/server/src/modules/*/index.js",
+    "./providers/*": "./.medusa/server/src/providers/*/index.js",
+    "./*": "./.medusa/server/src/*.js",
+    "./admin": {
+      "import": "./.medusa/server/src/admin/index.mjs",
+      "require": "./.medusa/server/src/admin/index.js",
+      "default": "./.medusa/server/src/admin/index.js"
+    }
+  },
+  "keywords": [
+    "medusa",
+    "plugin",
+    "medusa-plugin-other",
+    "medusa-plugin",
+    "medusa-v2"
+  ],
+  "scripts": {
+    "build": "medusa plugin:build",
+    "dev": "medusa plugin:develop",
+    "prepublishOnly": "medusa plugin:build"
+  },
+  "devDependencies": {
+    "@medusajs/admin-sdk": "2.12.3",
+    "@medusajs/cli": "2.12.3",
+    "@medusajs/framework": "2.12.3",
+    "@medusajs/icons": "2.12.3",
+    "@medusajs/medusa": "2.12.3",
+    "@medusajs/test-utils": "2.12.3",
+    "@medusajs/ui": "4.0.25",
+    "@swc/core": "1.5.7",
+    "@types/node": "^20.0.0",
+    "@types/node-fetch": "^2.6.13",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.2.25",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2",
+    "vite": "^5.2.11",
+    "yalc": "^1.0.0-pre.53"
+  },
+  "peerDependencies": {
+    "@medusajs/admin-sdk": "2.12.3",
+    "@medusajs/cli": "2.12.3",
+    "@medusajs/framework": "2.12.3",
+    "@medusajs/icons": "2.12.3",
+    "@medusajs/medusa": "2.12.3",
+    "@medusajs/test-utils": "2.12.3",
+    "@medusajs/ui": "4.0.25"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@bytescale/sdk": "^3.53.0",
+    "node-fetch": "^3.3.2"
+  }
+}
+</file>
+
+<file path="README.md">
+<p align="center">
+  <a href="https://www.medusajs.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
+  </a>
+</p>
+<h1 align="center">
+  Medusa Plugin Starter
+</h1>
+
+<h4 align="center">
+  <a href="https://docs.medusajs.com">Documentation</a> |
+  <a href="https://www.medusajs.com">Website</a>
+</h4>
+
+<p align="center">
+  Building blocks for digital commerce
+</p>
+<p align="center">
+  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
+  </a>
+    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
+  <a href="https://discord.gg/xpCwq3Kfn8">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+  </a>
+  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
+    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
+  </a>
+</p>
+
+## Compatibility
+
+This starter is compatible with versions >= 2.4.0 of `@medusajs/medusa`. 
+
+## Getting Started
+
+Visit the [Quickstart Guide](https://docs.medusajs.com/learn/installation) to set up a server.
+
+Visit the [Plugins documentation](https://docs.medusajs.com/learn/fundamentals/plugins) to learn more about plugins and how to create them.
+
+Visit the [Docs](https://docs.medusajs.com/learn/installation#get-started) to learn more about our system requirements.
+
+## What is Medusa
+
+Medusa is a set of commerce modules and tools that allow you to build rich, reliable, and performant commerce applications without reinventing core commerce logic. The modules can be customized and used to build advanced ecommerce stores, marketplaces, or any product that needs foundational commerce primitives. All modules are open-source and freely available on npm.
+
+Learn more about [Medusa’s architecture](https://docs.medusajs.com/learn/introduction/architecture) and [commerce modules](https://docs.medusajs.com/learn/fundamentals/modules/commerce-modules) in the Docs.
+
+## Community & Contributions
+
+The community and core team are available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can ask for support, discuss roadmap, and share ideas.
+
+Join our [Discord server](https://discord.com/invite/medusajs) to meet other community members.
+
+## Other channels
+
+- [GitHub Issues](https://github.com/medusajs/medusa/issues)
+- [Twitter](https://twitter.com/medusajs)
+- [LinkedIn](https://www.linkedin.com/company/medusajs)
+- [Medusa Blog](https://medusajs.com/blog/)
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "esModuleInterop": true,
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "declaration": false,
+    "sourceMap": false,
+    "inlineSourceMap": true,
+    "outDir": "./.medusa/server",
+    "rootDir": "./",
+    "jsx": "react-jsx",
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "checkJs": false,
+    "strictNullChecks": true
+  },
+  "ts-node": {
+    "swc": true
+  },
+  "include": [
+    "**/*",
+    ".medusa/types/*"
+  ],
+  "exclude": [
+    "node_modules",
+    ".medusa/server",
+    ".medusa/admin",
+    "src/admin",
+    ".cache"
+  ]
+}
+</file>
+
+</files>
