@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-bytescale",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Bytescale (formerly Upload.io) file storage provider for Medusa v2",
   "author": "Etarley Taveras",
   "license": "MIT",
